@@ -6,13 +6,9 @@ using System.Text.RegularExpressions;
 namespace AvenidaSoftware.Extensions {
 
 	public static class string_extensions {
-		static readonly Regex wordify_regex = new Regex( "(?<=[a-z])(?<x>[A-Z])|(?<=.)(?<x>[A-Z])(?=[a-z])" );
-		public static string wordify( this string s ) {
-			return string.IsNullOrEmpty(s) ? String.Empty : wordify_regex.Replace( s.Replace( " ", "" ), " ${x}" );
-		}
-
-		public static string wordify( this string s, string spacer ) {
-			return string.IsNullOrEmpty(s) ? String.Empty : wordify_regex.Replace( s.Replace( " ", spacer ), " ${x}" );
+		public static string wordify( this string str, string spacer = " " ) {
+			if( !Regex.IsMatch( str, "[a-z]" ) ) return str;
+			return string.Join( spacer, Regex.Split( str, @"(?<!^)(?=[A-Z])" ) );
 		}
 		
 		public static bool is_null_or_empty( this string str ) {
